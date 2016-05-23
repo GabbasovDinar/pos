@@ -636,7 +636,7 @@ odoo.define('pos_pricelist.models', function (require) {
                 },
                 {
                     model: 'product.supplierinfo',
-                    fields: ['delay',
+                    fields: ['id','delay',
                         'name',
                         'min_qty',
 	                    'price',
@@ -645,7 +645,7 @@ odoo.define('pos_pricelist.models', function (require) {
                         'sequence',
                         'qty',
                         'product_tmpl_id'],
-                    domain: null,
+                    domain: [['id', '<', 0]],
                     loaded: function (self, supplierinfos) {
                         self.db.add_supplierinfo(supplierinfos);
                     }
