@@ -60,14 +60,16 @@ odoo.define('pos_pricelist.models', function (require) {
          * @param session
          * @param attributes
          */
-        initialize: function (session, attributes) {
-            _super_posmodel.initialize.apply(this, arguments);
-	        this.db = new PosDB();
+        initialize: function (session, attributes) {    
+            var partner_model = _.find(this.models, function(model){ return model.model === 'product.product'; });
+            partner_model.fields.push('categ_id','seller_ids');
+            this.db = new PosDB();
             this.pricelist_engine = new models.PricelistEngine({
                 'pos': this,
                 'db': this.db
-            });
+            });                       
             arrange_elements(this);
+            return _super_posmodel.initialize.apply(this, arguments);
         },
         /**
          * find model based on name
@@ -168,7 +170,6 @@ odoo.define('pos_pricelist.models', function (require) {
          * @param options
          */
         initialize: function (attr, options) {
-            _super_orderline.initialize.apply(this, arguments);
             this.manual_price = false;
             if (this.product !== undefined) {
                 var qty = this.compute_qty(this.order, this.product);
@@ -182,6 +183,7 @@ odoo.define('pos_pricelist.models', function (require) {
 	                this.price = round_di(parseFloat(price) || 0, this.pos.dp['Product Price']);
                 }
             }
+            return _super_orderline.initialize.apply(this, arguments);
         },
         /**
          * @param state
