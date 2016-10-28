@@ -179,8 +179,10 @@ odoo.define('pos_pricelist.models', function (require) {
             var taxtotal = 0;
             var taxdetail = {};
             var product_taxes = this.get_applicable_taxes_for_orderline();
-            var all_taxes = _(this.compute_all(product_taxes, base)).flatten();
-            _(all_taxes).each(function (tax) {
+            var price_unit = this.get_unit_price() * (1.0 - (this.get_discount() / 100.0));
+            var all_taxes = this.compute_all(product_taxes, price_unit, this.get_quantity(), this.pos.currency.rounding);
+            _(all_taxes.taxes).each(function (tax) {
+                // console.log(tax);
                 if (tax.price_include) {
                     totalNoTax -= tax.amount;
                 } else {
@@ -191,8 +193,8 @@ odoo.define('pos_pricelist.models', function (require) {
             });
             totalNoTax = round_pr(totalNoTax, this.pos.currency.rounding);
             return {
-                "priceWithTax": totalTax,
-                "priceWithoutTax": totalNoTax,
+                "priceWithTax": all_taxes.total_included,
+                "priceWithoutTax": all_taxes.total_excluded,
                 "tax": taxtotal,
                 "taxDetails": taxdetail
             };
