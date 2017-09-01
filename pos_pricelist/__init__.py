@@ -17,10 +17,11 @@
 #
 ##############################################################################
 from . import models
-from openerp import SUPERUSER_ID
+from odoo import SUPERUSER_ID, api
 
 
 def set_pos_line_taxes(cr, registry):
+    env = api.Environment(cr, SUPERUSER_ID, {})
     """Copy the product taxes to the pos.line"""
     cr.execute("""insert into pline_tax_rel
                     select l.id, t.id
@@ -31,4 +32,4 @@ def set_pos_line_taxes(cr, registry):
                     join product_taxes_rel rel on rel.prod_id = pt.id
                     join account_tax t on rel.tax_id = t.id
                     where t.company_id = o.company_id""")
-    registry['pos.order']._install_tax_detail(cr, SUPERUSER_ID)
+    env["pos.order"]._install_tax_detail()

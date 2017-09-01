@@ -20,7 +20,7 @@
     'data': [
         "views/pos_pricelist_template.xml",
         "views/point_of_sale_view.xml",
-        "report/report_receipt.xml",
+        # "report/report_receipt.xml",
         "security/ir.model.access.csv",
         "security/account_fiscal_position_security.xml",
     ],
