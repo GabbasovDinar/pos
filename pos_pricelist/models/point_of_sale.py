@@ -19,8 +19,8 @@
 ##############################################################################
 
 
-from openerp import models, fields, api
-from openerp.addons import decimal_precision as dp
+from odoo import models, fields, api
+from odoo.addons import decimal_precision as dp
 import logging
 _logger = logging.getLogger(__name__)
 
