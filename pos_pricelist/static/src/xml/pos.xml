@@ -34,4 +34,18 @@
             </t>
         </t>
     </t>
+    <t t-extend="Orderline">
+        <t t-jquery="span[class*='price']" t-operation="replace">
+            <t t-if="line.show_product_price">
+                <span class="price">
+                    <t t-esc="widget.format_currency(line.get_display_old_price())"/>
+                </span>
+            </t>
+            <t t-if="!line.show_product_price">
+                <span class="price">
+                    <t t-esc="widget.format_currency(line.get_display_price())"/>
+                </span>
+            </t>
+        </t>
+    </t>
 </templates>
